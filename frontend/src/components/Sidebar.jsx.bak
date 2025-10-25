@@ -1,0 +1,36 @@
+import { NavLink } from 'react-router-dom'
+import { Home, Package, Calendar, MessageSquare, Users } from 'lucide-react'
+
+export default function Sidebar() {
+  const navItems = [
+    { to: '/', icon: Home, label: 'Dashboard' },
+    { to: '/lost-found', icon: Package, label: 'Lost & Found' },
+    { to: '/events', icon: Calendar, label: 'Events' },
+    { to: '/feedback', icon: MessageSquare, label: 'Feedback' },
+    { to: '/clubs', icon: Users, label: 'Clubs' },
+  ]
+
+  return (
+    <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-white dark:bg-gray-800 shadow-md">
+      <nav className="p-4 space-y-2">
+        {navItems.map(({ to, icon: Icon, label }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === '/'}
+            className={({ isActive }) =>
+              `flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                isActive
+                  ? 'bg-primary-600 text-white'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+              }`
+            }
+          >
+            <Icon className="w-5 h-5" />
+            <span>{label}</span>
+          </NavLink>
+        ))}
+      </nav>
+    </aside>
+  )
+}
