@@ -1,36 +1,37 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import ChatBot from './ChatBot'
-import { useEffect } from 'react'
-import { useAuthStore } from '../store/authStore'
-import { useNotificationStore } from '../store/notificationStore'
-import websocketService from '../lib/websocket'
-import toast from 'react-hot-toast'
+// import ChatBot from './ChatBot'
+// import { useEffect } from 'react'
+// import { useAuthStore } from '../store/authStore'
+// import { useNotificationStore } from '../store/notificationStore'
+// import websocketService from '../lib/websocket'
+// import toast from 'react-hot-toast'
 
 export default function Layout() {
-  const { token } = useAuthStore()
-  const { addNotification } = useNotificationStore()
+  // const { token } = useAuthStore()
+  // const { addNotification } = useNotificationStore()
 
-  useEffect(() => {
-    if (token) {
-      // Connect to WebSocket
-      websocketService.connect(token)
+  // Temporarily disabled WebSocket to prevent errors
+  // useEffect(() => {
+  //   if (token) {
+  //     // Connect to WebSocket
+  //     websocketService.connect(token)
 
-      // Add notification listener
-      const listenerId = 'layout-notifications'
-      websocketService.addListener(listenerId, (data) => {
-        if (data.type && data.action) {
-          addNotification(data)
-          toast.success(`New ${data.type}: ${data.action}`)
-        }
-      })
+  //     // Add notification listener
+  //     const listenerId = 'layout-notifications'
+  //     websocketService.addListener(listenerId, (data) => {
+  //       if (data.type && data.action) {
+  //         addNotification(data)
+  //         toast.success(`New ${data.type}: ${data.action}`)
+  //       }
+  //     })
 
-      return () => {
-        websocketService.removeListener(listenerId)
-      }
-    }
-  }, [token, addNotification])
+  //     return () => {
+  //       websocketService.removeListener(listenerId)
+  //     }
+  //   }
+  // }, [token, addNotification])
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -41,7 +42,7 @@ export default function Layout() {
           <Outlet />
         </main>
       </div>
-      <ChatBot />
+      {/* <ChatBot /> */}
     </div>
   )
 }

@@ -8,31 +8,59 @@ import { format } from 'date-fns'
 export default function Dashboard() {
   const { user } = useAuthStore()
 
-  const { data: stats } = useQuery({
+  const { data: stats, isLoading, error } = useQuery({
     queryKey: ['dashboard-stats'],
     queryFn: async () => {
-      const [lostFound, upcomingEvents, ongoingEvents, completedEvents, notifications] = await Promise.all([
-        api.get('/api/lost-found/items/'),
-        api.get('/api/events/events/?status=upcoming'),
-        api.get('/api/events/events/?status=ongoing'),
-        api.get('/api/events/events/?status=completed'),
-        api.get('/api/notifications/notifications/?limit=5'),
-      ])
-      return {
-        lostFoundItems: lostFound.data,
-        upcomingEvents: upcomingEvents.data,
-        ongoingEvents: ongoingEvents.data,
-        completedEvents: completedEvents.data,
-        notifications: notifications.data,
+      try {
+        const [lostFound, upcomingEvents, ongoingEvents, completedEvents, notifications] = await Promise.all([
+          api.get('/api/lost-found/items/'),
+          api.get('/api/events/?status=upcoming'),
+          api.get('/api/events/?status=ongoing'),
+          api.get('/api/events/?status=completed'),
+          api.get('/api/notifications/?limit=5'),
+        ])
+        return {
+          lostFoundItems: lostFound.data,
+          upcomingEvents: upcomingEvents.data,
+          ongoingEvents: ongoingEvents.data,
+          completedEvents: completedEvents.data,
+          notifications: notifications.data,
+        }
+      } catch (error) {
+        console.error('Dashboard error:', error)
+        return {
+          lostFoundItems: [],
+          upcomingEvents: [],
+          ongoingEvents: [],
+          completedEvents: [],
+          notifications: [],
+        }
       }
     },
   })
 
-  const upcomingEvents = stats?.upcomingEvents?.slice(0, 3) || []
-  const ongoingEvents = stats?.ongoingEvents?.slice(0, 3) || []
-  const completedEvents = stats?.completedEvents?.slice(0, 3) || []
-  const recentLostFound = stats?.lostFoundItems?.slice(0, 4) || []
-  const announcements = stats?.notifications || []
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-xl">Loading...</div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="text-xl text-red-600">Error loading dashboard. Please refresh the page.</div>
+      </div>
+    )
+  }
+
+  // Safely handle data - ensure arrays
+  const upcomingEvents = Array.isArray(stats?.upcomingEvents) ? stats.upcomingEvents.slice(0, 3) : []
+  const ongoingEvents = Array.isArray(stats?.ongoingEvents) ? stats.ongoingEvents.slice(0, 3) : []
+  const completedEvents = Array.isArray(stats?.completedEvents) ? stats.completedEvents.slice(0, 3) : []
+  const recentLostFound = Array.isArray(stats?.lostFoundItems) ? stats.lostFoundItems.slice(0, 4) : []
+  const announcements = Array.isArray(stats?.notifications) ? stats.notifications : []
 
   return (
     <div className="space-y-6 p-6">

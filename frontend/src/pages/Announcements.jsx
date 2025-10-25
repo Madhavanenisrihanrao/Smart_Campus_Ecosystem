@@ -7,7 +7,7 @@ export default function Announcements() {
   const { data: notifications, isLoading } = useQuery({
     queryKey: ['all-notifications'],
     queryFn: async () => {
-      const res = await api.get('/api/notifications/notifications/');
+      const res = await api.get('/api/notifications/');
       return res.data;
     },
   });

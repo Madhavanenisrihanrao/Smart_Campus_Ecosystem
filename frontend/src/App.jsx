@@ -21,32 +21,43 @@ function App() {
     return children
   }
 
-  return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={token ? <Navigate to="/" replace /> : <Login />} />
-        <Route path="/register" element={token ? <Navigate to="/" replace /> : <Register />} />
-        
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="announcements" element={<Announcements />} />
-          <Route path="lost-found" element={<LostFound />} />
-          <Route path="events" element={<Events />} />
-          <Route path="feedback" element={<Feedback />} />
-          <Route path="clubs" element={<Clubs />} />
-          <Route path="profile" element={<Profile />} />
-        </Route>
-      </Routes>
-    </Router>
-  )
+  try {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/login" element={token ? <Navigate to="/" replace /> : <Login />} />
+          <Route path="/register" element={token ? <Navigate to="/" replace /> : <Register />} />
+          
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="announcements" element={<Announcements />} />
+            <Route path="lost-found" element={<LostFound />} />
+            <Route path="events" element={<Events />} />
+            <Route path="feedback" element={<Feedback />} />
+            <Route path="clubs" element={<Clubs />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+        </Routes>
+      </Router>
+    )
+  } catch (error) {
+    console.error('App error:', error)
+    return (
+      <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+        <h1>Error loading application</h1>
+        <p>Please refresh the page or check the console for details.</p>
+        <pre>{error.message}</pre>
+      </div>
+    )
+  }
 }
 
 export default App

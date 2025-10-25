@@ -3,10 +3,33 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from .serializers import RegisterSerializer, UserSerializer, ChangePasswordSerializer
 
 User = get_user_model()
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    """Custom login view that returns user data along with tokens"""
+    
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        
+        if response.status_code == 200:
+            # Get user data
+            from django.contrib.auth import authenticate
+            user = authenticate(
+                request,
+                username=request.data.get('email'),
+                password=request.data.get('password')
+            )
+            
+            if user:
+                user_data = UserSerializer(user).data
+                response.data['user'] = user_data
+        
+        return response
 
 
 class RegisterView(generics.CreateAPIView):
