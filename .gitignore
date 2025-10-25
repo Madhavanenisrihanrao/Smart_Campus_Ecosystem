@@ -1,0 +1,40 @@
+# Root .gitignore for Smart_Campus_Ecosystem
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+/.vite
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+venv/
+.venv/
+env/
+ENV/
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Environment files
+backend/.env
+frontend/.env
+.env
+.env.local
+.env.production
+
+# Database
+db.sqlite3
+backend/db.sqlite3
+
+# Build outputs
+build/
+dist/
+
+# Misc
+*.log
