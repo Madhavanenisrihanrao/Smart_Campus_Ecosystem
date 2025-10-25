@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KLH Campus Hub</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  </head>
+  <body>
+    <header>
+      <h1>KLH Campus Hub</h1>
+      <p>Server-rendered Django frontend. APIs remain available at /api/...</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>Welcome</h2>
+        <p>This project now serves pages using Django templates. Replace this with your Django templates or add JS that calls the backend API endpoints.</p>
+      </section>
+
+      <section>
+        <h3>APIs</h3>
+        <ul>
+          <li><a href="/api/auth/">Auth API</a></li>
+          <li><a href="/api/events/">Events API</a></li>
+          <li><a href="/api/lost-found/">Lost &amp; Found API</a></li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <small>&copy; KLH Campus Hub</small>
+    </footer>
+  </body>
+</html>

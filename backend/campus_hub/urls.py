@@ -8,6 +8,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Project-level template routes (server-rendered pages)
+    path('', include('core.urls')),
     path('api/auth/', include('accounts.urls')),
     path('api/lost-found/', include('lost_found.urls')),
     path('api/events/', include('events.urls')),
